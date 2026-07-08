@@ -12,8 +12,8 @@ export const options = {
         exhaust_pool: {
             executor: 'ramping-vus',
             stages: [
-                { duration: '20s', target: 50 },   // 0 -> 50 VU 점진 증가
-                { duration: '2m',  target: 50 },   // 50 VU 유지 (풀 고갈 기대 구간)
+                { duration: '20s', target: 200 },   // 200 -> 50 VU 점진 증가
+                { duration: '2m',  target: 200 },   // 200 VU 유지 (풀 고갈 기대 구간)
                 { duration: '20s', target: 0 },    // 정리
             ],
             gracefulStop: '10s',
@@ -30,9 +30,9 @@ export const options = {
 const BASE_URL = 'https://a.simple-sns.link';
 
 export default function() {
-    // 타임아웃 제어: WAS가 응답을 안 주고 버틸 때, k6가 무한정 기자리지 않고 10초만에 연결을 끊도록 안전장치를 걸어둠
+    // 타임아웃 제어: WAS가 응답을 안 주고 버틸 때, k6가 무한정 기다리지 않고 30초만에 연결을 끊도록
     const res = http.get(`${BASE_URL}/api/feeds/random`, {
-        timeout: '10s',
+        timeout: '30s',
     });
 
     const ok = check(res, {

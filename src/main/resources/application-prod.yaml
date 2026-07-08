@@ -53,9 +53,14 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        include: health, info, prometheus   # prometheus 추가
   endpoint:
     health:
-      show-details: never
-      probes:
+      show-details: when-authorized
+  metrics:
+    tags:
+      application: flicker  # 모든 메트릭에 application=flicker 태그
+  prometheus:
+    metrics:
+      export:
         enabled: true
